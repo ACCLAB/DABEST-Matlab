@@ -1,2 +1,2 @@
-# ContrastPlotPackage_MATLAB
+# ContrastPlot_MATLAB
 MATLAB version of the contrast plot package
