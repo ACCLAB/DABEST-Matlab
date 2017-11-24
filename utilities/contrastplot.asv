@@ -1,0 +1,13 @@
+function contrastplot(csvFile, varargin)
+d = readtable(csvFile);
+identifiers = d(:,{'Identifiers'});
+identifiers = 
+data = d(:,{'Values'})
+close(gcf);
+if length(varargin) > 0
+    [ss,avr,moes] = FscatJit2_CombinedControls(identifiers, data)
+else
+    [ss] = FscatJit2(identifiers, data)
+end
+
+end
