@@ -8,7 +8,12 @@ data = table2array(data);
 close(gcf);
 
 if length(varargin) > 0
-    [ss,avr,moes] = FscatJit2_CombinedControls(identifiers, data)
+    if strcmp(varargin{1},'Paired');
+        [ss] = FscatJit2(identifiers, data,'Y')
+    
+    else strcmp(varargin{1},'combineControls');
+        [ss,avr,moes] = FscatJit2_CombinedControls(identifiers, data)
+    end
 else
     [ss] = FscatJit2(identifiers, data)
 end

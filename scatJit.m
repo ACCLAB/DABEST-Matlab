@@ -63,5 +63,5 @@ clonejit=clone+jits;
 if isempty(circleSize)
     circleSize=30;
 end
-s1 = scatter(clonejit, vec, circleSize, color, 'filled');
+s1 = scatter(clonejit, vec, circleSize , color, 'filled');
 

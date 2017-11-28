@@ -72,7 +72,7 @@ elseif nVarargs == 1 && isfloat(varargin{1});
 elseif nVarargs == 1 && ~isfloat(varargin{1});
     lims = [];
     isPaired = varargin{1};
-    circleSize=170;
+    circleSize=50;
     barstate='off';
 elseif nVarargs == 2
     lims = varargin{1};
@@ -146,6 +146,7 @@ end
 %% Plot scatjits
 jitFactor=0.2;
 circleSize=circleSize./max(X);% So circleSize scales with n-data columns
+
 if strcmp(barstate, 'off') && strcmp(isPaired, 'N')
     colors = lines(100);
     for idx=1:nex
@@ -184,11 +185,13 @@ if length(celld)==2;
     mdidents=vertcat(uidents,' ');
     set(gca, 'xtickLabel', mdidents);
     set(gca, 'XLim', [0 length(mdidents)+1]);
+    ylabel('value','FontSize',18,'FontName','Arial');
 else
     set(gca,'XTick',X);
     %     set(gca, 'xtickLabel', uidents);
     set(gca, 'xtickLabel', []);
     set(gca, 'XLim', [0 length(uidents)+1]);
+    ylabel('value','FontSize',18,'FontName','Arial');
 end
 
 
@@ -196,11 +199,12 @@ end
 %% Insert mean difference and CIs on a different axis if there is a pair
 if length(celld)==2;
     if strcmpi(isPaired, 'Y')
+        colors = lines(100);
         hold off
         if length(celld{1}) == length (celld{2})
             curDat = [celld{1} celld{2}];
         else
-            disp ('No. of flies does not match. Aborting');
+            disp ('Number of flies do not match. Aborting');
             return
         end
         [rows, ~] = size(curDat);
@@ -214,7 +218,7 @@ if length(celld)==2;
         set(gca,'XTick',Xplus)
         set(gca, 'xtickLabel', mdidents);
         set(gca, 'XLim', [0 length(mdidents)+1], 'box', 'off');
-        ylabel('Percent Time Spent at Alcove','FontSize',18,'FontName','Arial');
+        ylabel('value','FontSize',18,'FontName','Arial');
         tripleErrorBars(av, er, [.5 2.5], barwidth, linewidth, middle_bar);
     end
 
@@ -285,7 +289,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num3*y2-(num3-1)*y .001 yNew-(num3*y2-(num3-1)*y)]);
         axis([0 4 num3*ss.md (num-1)*abs(ss.md)]);
         
-        marker = 'v';
+        
     elseif ss.md > 0
         
         while (num3*y2-(num3-1)*y) >= ax1Pos(2) + ax1Pos(4);
@@ -308,7 +312,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num*y-(num-1)*y2 .001 ((num3*y2-(num3-1)*y) - (num*y-(num-1)*y2))]);
         axis([0 4 (num-1)*(-1)*ss.md num3*(ss.md)]);
         
-        marker = '^';
+        
     else
         
         errorBarAxis = axes('Position',[ax1Pos(1) y-0.3 ax1Pos(3) 0.6]);
@@ -319,10 +323,11 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) y-0.3 .001 0.6]);
         axis([0 4 -0.1 0.1]);
         
-        marker ='o';
+        marker ='v';
     end
     
     if strcmp(isPaired, 'Y')
+        colors = lines(100);
         [x,~] = dsxy2figxy(refAxes, .5, av(1));
         [x2, ~] = dsxy2figxy(refAxes, 2.5, av(2));
         line1= annotation('line', [x ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1)))], [y y]);
@@ -336,7 +341,7 @@ if length(celld)==2;
     
     set(line1, 'LineStyle', ':');
     set(line2, 'LineStyle', ':');
-    
+    marker = 'v';
     set(p3,'MarkerFaceColor',[0 0 0],'MarkerEdgeColor',[0 0 0],...
         'MarkerSize',5,...
         'Marker',marker,...
@@ -354,6 +359,8 @@ else
     dummyAxis = axes('Position', get(refAxes, 'Position'));
     set(errorBarAxis,'Color','k', 'Visible', 'Off');
     set(dummyAxis,'Color','k', 'Visible', 'Off');
+    marker = 'o';
+    ylabel('value','FontSize',18,'FontName','Arial');
     if isempty(lims) == 0
         set(refAxes, 'YLim', lims);
     end
@@ -381,7 +388,7 @@ else
     axHi = ciMax + .1*abs(ciMax-ciMin);
     
     p(2,1).select();
-    
+    ylabel('delta value','FontSize',18,'FontName','Arial');
     p4= errorbar(1:length(avr(1,:)), avr(1,:), moes(1,:), moes(2,:));
     
     axis([0 length(avr(1,:))+1 axLo axHi]);
@@ -400,10 +407,11 @@ else
     %% Multiple pairwise comparisons
     clearvars avr moes;
     if mod(length(celld),2)==0
-        disp('ok');
         figure;
         pwmd = panel();
         pwmd.pack([50,50], 1);
+ 
+        marker = 'o';
         
         % Pairwise mean differences
         idx = 1;
@@ -429,7 +437,8 @@ else
         
         pwmd(1,1).select();
         refAxes = gca;
-        
+        marker = 'o';
+        ylabel('value','FontSize',18,'FontName','Arial');
         if isempty(lims) == 0
             set(refAxes, 'YLim', lims);
         end
@@ -462,14 +471,15 @@ else
             for idx = 1:nex
                 curDat=celld{idx};
                 hold on
-                scatJit(curDat, jitFactor, newX(idx), circleSize);
+                scatJit(curDat, jitFactor, newX(idx), circleSize,colors(idx,:));
             end
         end
-        tripleErrorBars(av, er, newX, 0.3, 2, middle_bar);
+        tripleErrorBars(av, er, newX,barwidth, linewidth, middle_bar);
         
         
         pwmd(2,1).select();
-        
+        ylabel('delta value','FontSize',18,'FontName','Arial');
+
         idx = 1;
         count = 1;
         esX = zeros(1, length(newX)/2);

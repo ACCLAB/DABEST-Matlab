@@ -220,11 +220,12 @@ L = {[uidents{1},'(n=',num2str(length(celld{1})),')'],...
 else
    L = {[uidents{1},'(n=',num2str(length(celld{1})),')'],...
     [uidents{2},'(n=',num2str(length(celld{2})),')'],...
-    ['Experimental Genotypes']...
+    [uidents{3},'(n=',num2str(length(celld{3})),')']...
+%     ['Experimental Genotypes'],...
     }; 
 end
-legend(L)
-% ylabel('Mean Temperature Preference(Celsius degrees)')
+
+ylabel('value','FontSize',18,'FontName','Arial');
 
 
 %%%Tayfun: Combining the first two genotypes which are parental
@@ -246,8 +247,14 @@ celld = celld_combined_ctls;
 
 %% Set ticks, contigent on whether it is 2 or some other number of datasets
 if length(celld)==2;
+    uidents_combined = cell(length(uidents),1);
+    uidents_combined{1} = [uidents{1},uidents{2}];
+    uidents_combined{2} = uidents{3};
+    uidents_combined{3} = ' ';
+    
     Xplus=horzcat(X, 3);
     set(gca,'XTick',Xplus);
+    set(gca, 'xtickLabel', uidents_combined);
 %     set(gca,'YLim', [0 1000]);
     mdidents=vertcat(uidents);
 %     set(gca, 'xtickLabel', mdidents);
@@ -263,6 +270,7 @@ end
 
 %% Insert mean difference and CIs on a different axis if there is a pair
 if length(celld)==2;
+        legend(L);
     if strcmpi(isPaired, 'Y')
         hold off
         if length(celld{1}) == length (celld{2})
@@ -273,16 +281,16 @@ if length(celld)==2;
         end
         [rows, ~] = size(curDat);
         paired = plot(curDat(1, :));
-        set(paired, 'Color', [0.5020    0.5020    0.5020]);
+        set(paired, 'Color', [0    0    0]);
         hold on;
         for idx = 2:rows
             paired = plot(curDat(idx, :));
-            set(paired, 'Color', [0.5020    0.5020    0.5020]);
+            set(paired, 'Color', [0    0    0]);
         end
         set(gca,'XTick',Xplus)
         set(gca, 'xtickLabel', mdidents);
         set(gca, 'XLim', [0 length(mdidents)+1], 'box', 'off');
-        ylabel('Percent Time Spent at Alcove','FontSize',18,'FontName','Arial');
+%         ylabel('Percent Time Spent at Alcove','FontSize',18,'FontName','Arial');
  
         tripleErrorBars(av, er, [.5 2.5], barwidth, linewidth, middle_bar);
     end
@@ -354,7 +362,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num3*y2-(num3-1)*y .001 yNew-(num3*y2-(num3-1)*y)]);
         axis([0 4 num3*ss.md (num-1)*abs(ss.md)]);
         
-        marker = 'v';
+        marker = 'o';
     elseif ss.md > 0
         
         while (num3*y2-(num3-1)*y) >= ax1Pos(2) + ax1Pos(4);
@@ -410,7 +418,7 @@ if length(celld)==2;
     set(line2, 'LineStyle', ':');
         
     
-    set(p3,'MarkerFaceColor',[0 0 1],'MarkerEdgeColor',[0 0 1],...
+    set(p3,'MarkerFaceColor',[0 0 0],'MarkerEdgeColor',[0 0 0],...
         'MarkerSize',5,...
         'Marker',marker,...
         'LineStyle','none');
@@ -418,7 +426,7 @@ if length(celld)==2;
     set(errorBarAxis, 'Visible', 'Off');
     set(dummyAxis, 'YAxisLocation', 'right');
     %     set(dummyAxis, 'FontSize', 7);
-    
+
 elseif length(celld)>2
     % To ensure consistency with the md plot so that each figure has 3
     % child axes
@@ -427,6 +435,7 @@ elseif length(celld)>2
     dummyAxis = axes('Position', get(refAxes, 'Position'));
     set(errorBarAxis, 'Visible', 'Off');
     set(dummyAxis, 'Visible', 'Off');
+    ylabel('value','FontSize',18,'FontName','Arial');
     if isempty(lims) == 0
         set(refAxes, 'YLim', lims);
     end
@@ -454,22 +463,23 @@ elseif length(celld)>2
     axHi = ciMax + .1*abs(ciMax-ciMin);
     
     p(2,1).select();
-    
+    ylabel('delta value','FontSize',18,'FontName','Arial');
+
     p4= errorbar(1:length(avr(1,:)), avr(1,:), moes(1,:), moes(2,:));
     
     axis([0 length(avr(1,:))+1 axLo axHi]);
     
     marker ='o';
     
-    set(p4,'MarkerFaceColor',[0 0 1],'MarkerEdgeColor',[0 0 1],...
+    set(p4,'MarkerFaceColor',[0 0 0],'MarkerEdgeColor',[0 0 0],'Color','k',...
         'MarkerSize',5,...
         'Marker',marker,...
         'LineStyle','none');
     
-    uidents_combined = cell(length(uidents)-1,1);
-%     uidents_combined{1} = [uidents{1},uidents{2}];
-    for uident_id=1:(length(uidents)-2)
-    uidents_combined{uident_id+1} = uidents{uident_id+2};
+    uidents_combined = cell(length(uidents),1);
+    uidents_combined{1} = [uidents{1},uidents{2}];
+    for uident_id=2:(length(uidents)-1)
+    uidents_combined{uident_id} = uidents{uident_id+1};
     end
     
     set(gca, 'Xtick', X, 'xtickLabel', uidents_combined);
@@ -484,6 +494,7 @@ elseif length(celld)>2
         figure;
         pwmd = panel();
         pwmd.pack([50,50], 1);
+        
         
         %%%Re arrange original celld into
         %%%[ctl1,ctl2],[exp1],[ctl3,ctl4],[expt2]...] format%%%%%%%%%
@@ -539,6 +550,7 @@ elseif length(celld)>2
         pwmd(1,1).select();
         refAxes = gca;
         
+        ylabel('value','FontSize',18,'FontName','Arial');
         if isempty(lims) == 0
             set(refAxes, 'YLim', lims);
         end
@@ -560,10 +572,10 @@ elseif length(celld)>2
                 end
             end
             set(bar_child,'CData',mydata);
-            cmap = [1     1     1; 0.4000    0.4000    0.4000];
-            set(b, 'EdgeColor', [0.1    0.1    0.1], 'LineWidth', 1.25);
+%             cmap = [1     1     1; 0.4000    0.4000    0.4000];
+            set(b, 'EdgeColor', 'k', 'LineWidth', 1.25);
             set(gca, 'box', 'off');
-            colormap(cmap);
+%             colormap(cmap);
 
         end
         
@@ -597,9 +609,9 @@ elseif length(celld)>2
 %         [uidents{2},'(n=',num2str(length(celld_backup{2})),')'],...
 %         ['Experimental Genotypes']...
 %         }; 
-%         legend(L)
-        pwmd(2,1).select();
         
+        pwmd(2,1).select();
+        ylabel('delta value','FontSize',18,'FontName','Arial');
         idx = 1;
         count = 1;
         esX = zeros(1, length(newX)/2);
@@ -612,7 +624,7 @@ elseif length(celld)>2
         p5= errorbar(esX, avr(1,:), moes(1,:), moes(2,:));
         
         marker ='o';
-        set(p5,'MarkerFaceColor',[0 0 1],'MarkerEdgeColor',[0 0 1],...
+        set(p5,'MarkerFaceColor',[0 0 0],'MarkerEdgeColor',[0 0 0],'Color','k',...
             'MarkerSize',5,...
             'Marker',marker,...
             'LineStyle','none'...
@@ -639,6 +651,7 @@ elseif length(celld)>2
         
         line1 = refline(0,0);
         set(line1, 'lineStyle', ':')
+        
     end
 
 end
