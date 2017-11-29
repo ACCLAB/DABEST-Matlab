@@ -52,13 +52,13 @@ When two groups of data are needed to be combined and compared to a third group,
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MergedGroups.png)
 
-### 7. Multiple merged groups
+### 6. Multiple merged groups
 
 When the data contain more than three groups (and a number that is divisible by 3), running the same command, `contrastplot('MultipleGroups_sample.csv','mergeGroups')`, generates a *multiple merged groups* plot.
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MultipleMergedGroups.png)
 
-### 6. Merged shared control
+### 7. Merged shared control
 
 If the data contain more than three groups, running the same command, `contrastplot('MultipleGroups_sample.csv','mergeGroups')`, automatically generates a second plot in which all the groups are compared to the *merged shared control*.
 
