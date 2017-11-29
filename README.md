@@ -6,7 +6,7 @@ A MATLAB library to generate scatter plots with bootstrapped confidence interval
 
 ## Installation
 
-The library can be installed by following the instructions: https://help.github.com/articles/cloning-a-repository/
+The library can be installed by following the github instructions: https://help.github.com/articles/cloning-a-repository/
 
 ## Tutorial
 
@@ -16,7 +16,7 @@ Data should be in the csv file format and contain two columns with the headers: 
 
 *Identifiers* are the labels of each data point, whereas *Values* are the data points (see the example below).
 
-Insert Example Image for the data
+![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/DataFormat.png)
 
 *Note: All the sample data used in this tutorial are taken from S. Champely's  [anscombe2](https://www.rdocumentation.org/packages/PairedData/versions/0.9.9/topics/anscombe2) dataset, and can be found in ContrastPlot_MATLAB/ExampleData/* folder.
 
@@ -50,16 +50,16 @@ If there are more than two groups in the data, `contrastplot('MultipleGroups_sam
 
 When two groups of data needed to be combined and compared to a third group, running `contrastplot('MultipleGroups_sample.csv','mergeGroups')` will generate a *merged groups* plot.
 
-![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/CombinedControls.png)
+![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MergedGroups.png)
 
 ### 7. Multiple merged groups
 
 When the data contain more than three groups (and a number that is divisible by 3), running the same command, `contrastplot('MultipleGroups_sample.csv','mergeGroups')`, generates a *multiple merged groups* plot.
 
-![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/MultipleCombinedControls.png)
+![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MultipleMergedGroups.png)
 
 ### 6. Merged shared control
 
 If the data contain more than three groups, running the same command, `contrastplot('MultipleGroups_sample.csv','mergeGroups')`, automatically generates a second plot in which all the groups are compared to the *merged shared control*.
 
-![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/CombinedControledMultipleGroups.png)
+![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MergedSharedControl.png)
