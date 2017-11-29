@@ -14,13 +14,13 @@ The library can be installed by following the github instructions: https://help.
 
 Data should be in the csv file format and contain two columns with the headers: *Identifiers* and *Values*.
 
-*Identifiers* are the labels of each data point, whereas *Values* are the data points (see the example below).
+*Identifiers* are the labels of each data point, and *Values* are the data points (see the example below).
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/DataFormat.png)
 
 *Note: All the sample data used in this tutorial are taken from S. Champely's  [anscombe2](https://www.rdocumentation.org/packages/PairedData/versions/0.9.9/topics/anscombe2) dataset, and can be found in ContrastPlot_MATLAB/ExampleData/* folder.
 
-Depending on the number of groups the data contain, main function *contrastplot* can be used to plot verious types of plots:
+Depending on the number of groups the data contain, the main function *contrastplot* produces various plots:
 
 ### 1. Two groups
 
@@ -48,7 +48,7 @@ If there are more than two groups in the data, `contrastplot('MultipleGroups_sam
 
 ### 5. Merged groups
 
-When two groups of data needed to be combined and compared to a third group, running `contrastplot('MultipleGroups_sample.csv','mergeGroups')` will generate a *merged groups* plot.
+When two groups of data are needed to be combined and compared to a third group, running `contrastplot('MultipleGroups_sample.csv','mergeGroups')` will generate a *merged groups* plot.
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/MergedGroups/MergedGroups.png)
 
