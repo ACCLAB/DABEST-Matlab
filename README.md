@@ -46,20 +46,20 @@ If there are more than two groups in the data, `contrastplot('MultipleGroups_sam
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/IndividualGroups/SharedControls.png)
 
-### 5. Combined groups
+### 5. Merged groups
 
-When two groups of data needed to be combined and compared to a third group, running `contrastplot('MultipleGroups_sample.csv',''combineGroups')` will generate a *combined groups* plot.
+When two groups of data needed to be combined and compared to a third group, running `contrastplot('MultipleGroups_sample.csv',''combineGroups')` will generate a *merged groups* plot.
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/CombinedControls.png)
 
-### 7. Multiple combined groups
+### 7. Multiple merged groups
 
-When the data contain more than three groups (and a number that is divisible by 3), running the same command, `contrastplot('MultipleGroups_sample.csv',''combineGroups')`, generates a *multiple combined groups* plot.
+When the data contain more than three groups (and a number that is divisible by 3), running the same command, `contrastplot('MultipleGroups_sample.csv',''combineGroups')`, generates a *multiple merged groups* plot.
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/MultipleCombinedControls.png)
 
-### 6. Combined shared control
+### 6. Merged shared control
 
-If the data contain more than three groups, running the same command, `contrastplot('MultipleGroups_sample.csv',''combineGroups')`, automatically generates a second plot in which all the groups are compared to the *combined shared control*.
+If the data contain more than three groups, running the same command, `contrastplot('MultipleGroups_sample.csv',''combineGroups')`, automatically generates a second plot in which all the groups are compared to the *merged shared control*.
 
 ![](https://github.com/ttumkaya/ContrastPlot_MATLAB/blob/master/ExampleData/CombinedControls/CombinedControledMultipleGroups.png)
