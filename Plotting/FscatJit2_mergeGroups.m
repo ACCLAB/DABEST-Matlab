@@ -362,7 +362,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num3*y2-(num3-1)*y .001 yNew-(num3*y2-(num3-1)*y)]);
         axis([0 4 num3*ss.md (num-1)*abs(ss.md)]);
         
-        marker = 'o';
+        marker = 'v';
     elseif ss.md > 0
         
         while (num3*y2-(num3-1)*y) >= ax1Pos(2) + ax1Pos(4);

@@ -289,7 +289,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num3*y2-(num3-1)*y .001 yNew-(num3*y2-(num3-1)*y)]);
         axis([0 4 num3*ss.md (num-1)*abs(ss.md)]);
         
-        
+        marker ='v';
     elseif ss.md > 0
         
         while (num3*y2-(num3-1)*y) >= ax1Pos(2) + ax1Pos(4);
@@ -311,7 +311,7 @@ if length(celld)==2;
         % to the mean difference
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) num*y-(num-1)*y2 .001 ((num3*y2-(num3-1)*y) - (num*y-(num-1)*y2))]);
         axis([0 4 (num-1)*(-1)*ss.md num3*(ss.md)]);
-        
+        marker ='^';
         
     else
         
@@ -323,7 +323,7 @@ if length(celld)==2;
         dummyAxis = axes('Position',[ax1Pos(1) + ax1Pos(3)-((x-ax1Pos(1))/2) y-0.3 .001 0.6]);
         axis([0 4 -0.1 0.1]);
         
-        marker ='v';
+        marker ='o';
     end
     
     if strcmp(isPaired, 'Y')
