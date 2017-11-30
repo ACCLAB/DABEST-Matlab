@@ -6,7 +6,7 @@ A MATLAB package to generate scatter plots with bootstrapped confidence interval
 
 ## Installation
 
-The package can be installed by following the github instructions: https://help.github.com/articles/cloning-a-repository/
+The package can be installed by following github instructions: https://help.github.com/articles/cloning-a-repository/
 
 ## Tutorial
 
