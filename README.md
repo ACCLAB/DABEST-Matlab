@@ -2,11 +2,11 @@
 
 ## About
 
-A MATLAB library to generate scatter plots with bootstrapped confidence intervals and effect sizes based on means.
+A MATLAB package to generate scatter plots with bootstrapped confidence intervals and effect sizes based on means.
 
 ## Installation
 
-The library can be installed by following the github instructions: https://help.github.com/articles/cloning-a-repository/
+The package can be installed by following the github instructions: https://help.github.com/articles/cloning-a-repository/
 
 ## Tutorial
 
