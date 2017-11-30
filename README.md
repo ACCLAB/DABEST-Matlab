@@ -1,4 +1,4 @@
-# ContrastPlot_MATLAB
+# bootstrap_contrast.m
 
 ## About
 
