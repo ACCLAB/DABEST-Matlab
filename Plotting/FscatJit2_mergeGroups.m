@@ -298,14 +298,6 @@ if length(celld)==2;
 
     
     % Get the mean difference and CIs
-%     esm='md';
-%     if strcmp(isPaired, 'Y')
-%         ss=mes(celld{2},celld{1},esm, 'isDep', 1);
-%     else
-%         ss=mes(celld{2},celld{1},esm);
-%     end
-%     avr=repmat(ss.md,2, 1);
-%     moes=abs(avr-ss.mdCi);
  
     esm='md';
     if strcmp(isPaired, 'Y')
@@ -316,7 +308,6 @@ if length(celld)==2;
     
     avr=repmat(ss.md,2, 1)
     moes=abs(avr-ss.mdCi)
-    
 
     % Position of the reference axes (the axes that hold the scatjit_Tayfun)
     refAxes = gca;

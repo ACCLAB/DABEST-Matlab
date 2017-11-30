@@ -225,20 +225,12 @@ if length(celld)==2;
 
     
     % Get the mean difference and CIs
-%     esm='md';
-%     if strcmp(isPaired, 'Y')
-%         ss=mes(celld{2},celld{1},esm, 'isDep', 1);
-%     else
-%         ss=mes(celld{2},celld{1},esm);
-%     end
-%     avr=repmat(ss.md,2, 1);
-%     moes=abs(avr-ss.mdCi);
  
     esm='md';
     if strcmp(isPaired, 'Y')
-        ss=mes(celld{2},celld{1},esm, 'isDep', 1);
+        ss=mes(celld{2},celld{1},esm,'nBoot',10000, 'isDep', 1);
     else
-        ss=mes(celld{2},celld{1},esm);
+        ss=mes(celld{2},celld{1},esm,'nBoot',10000);
     end
     avr=repmat(ss.md,2, 1);
     moes=abs(avr-ss.mdCi);
@@ -366,19 +358,18 @@ else
     end
     
     % Get the mean difference and CIs
-    esm='hedgesg';
+    esm='md';
     clear moes;
-    
     
     avr = zeros(2, length(celld));
     moes = zeros(2, length(celld));
     ci = zeros(2, length(celld));
     
     for idx = 2:length(celld)
-        ss=mes(celld{idx},celld{1},esm);
-        avr(:,idx)=repmat(ss.hedgesg,2, 1);
-        moes(:,idx)=abs(avr(:,idx)-ss.hedgesgCi);
-        ci(:,idx) = ss. hedgesgCi;
+        ss=mes(celld{idx},celld{1},esm,'nBoot',10000);
+        avr(:,idx)=repmat(ss.md,2, 1);
+        moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
+        ci(:,idx) = ss.mdCi;
     end
     
     [ciMin, ~] = min(ci(1,:));
@@ -417,9 +408,9 @@ else
         idx = 1;
         jdx = 1;
         while jdx < length(celld)
-            ss=mes(celld{jdx+1},celld{jdx},esm);
-            avr(:,idx)=repmat(ss.hedgesg,2, 1);
-            moes(:,idx)=abs(avr(:,idx)-ss.hedgesgCi);
+            ss=mes(celld{jdx+1},celld{jdx},esm,'nBoot',10000);
+            avr(:,idx)=repmat(ss.md,2, 1);
+            moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
             jdx = jdx+2;
             idx = idx + 1;
         end
