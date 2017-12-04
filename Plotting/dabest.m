@@ -1,4 +1,4 @@
-function contrastplot(csvFile, varargin)
+function dabest(csvFile, varargin)
 
 d = readtable(csvFile);
 identifiers = d(:,{'Identifiers'});
