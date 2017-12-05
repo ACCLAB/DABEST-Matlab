@@ -8,7 +8,7 @@ This code allows the user to visualize the data as scatterplots; calculates the 
 
 ## Installation
 
-DABEST-Matlab can be installed either via MATLAB Central (https://www.mathworks.com/matlabcentral/fileexchange/65260-dabest-matlab) or GitHub (how to clone a repo: https://help.github.com/articles/cloning-a-repository/).
+DABEST-Matlab can be installed via MATLAB Central (https://www.mathworks.com/matlabcentral/fileexchange/65260-dabest-matlab) or GitHub (how to clone a repo: https://help.github.com/articles/cloning-a-repository/).
 
 ## Tutorial
 
