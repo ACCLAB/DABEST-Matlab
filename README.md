@@ -47,7 +47,7 @@ Data should be in *the csv file format* and contain two columns with the headers
 
 *Identifiers* are the labels of each data point, and *Values* are the data points (see the example below).
 
-![](https://github.com/ACCLAB/ContrastPlot_MATLAB/blob/master/SampleData/DataFormat.png)
+![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/DataFormat.png)
 
 *Note: All the sample data used in this tutorial are taken from S. Champely's  [anscombe2](https://www.rdocumentation.org/packages/PairedData/versions/0.9.9/topics/anscombe2) dataset, and can be found in DABEST-Matlab/SampleData/*.
 
