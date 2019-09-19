@@ -75,7 +75,7 @@ If the number of groups is an **even number**, a *multiple groups* plot will be 
 
 If there are more than two groups in the data, `dabest('MultipleGroups_sample.csv')` generates a *shared control* plot.
 
-![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/SharedControls_sample.png)
+![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/SharedControl_sample.png)
 
 ### 5. Merged groups
 
