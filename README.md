@@ -51,19 +51,20 @@ Data should be in *the csv file format* and contain two columns with the headers
 
 *Note: All the sample data used in this tutorial are taken from S. Champely's  [anscombe2](https://www.rdocumentation.org/packages/PairedData/versions/0.9.9/topics/anscombe2) dataset, and can be found in DABEST-Matlab/SampleData/*.
 
-Depending on the number of groups the data contain, the main function *dabest* produces various plots:
+Depending on the number of groups the data contain, the main function *dabest* produces various plots, and returns the key 
+information as a table object.
 
 ### 1. Two groups
 
 If the data have two different groups, `dabest('TwoGroups_sample.csv')` generates a *two groups* plot.
 
-![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/TwoGroups_sample.png)
+![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/TwoGroup_sample.png)
 
 ### 2. Paired
 
 Running `dabest('TwoGroups_sample.csv','Paired')` generates a *paired* plot with the two groups data.
 
-![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/TwoGroupsPaired_sample.png)
+![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/IndividualGroups/TwoGroupPaired_sample.png)
 
 ### 3. Multiple groups
 
@@ -79,7 +80,7 @@ If there are more than two groups in the data, `dabest('MultipleGroups_sample.cs
 
 ### 5. Merged groups
 
-To combine two groups of data and compare to a third group, run `dabest('MultipleGroups_sample.csv','mergeGroups')`.
+To combine two groups of data and compare to a third group, run `dabest('MergedGroups_sample.csv','mergeGroups')`.
 
 ![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/MergedGroups/MergedGroups_sample.png)
 
@@ -91,6 +92,6 @@ For the data that contain more than three groups -and a number that is divisible
 
 ### 7. Merged shared control
 
-If the data contain more than three groups, `dabest('MultipleGroups_sample.csv','mergeGroups')` automatically generates a second plot in which all the groups are compared to the *merged shared control*.
+If the data contain more than three groups, `dabest('MultipleMergedGroups_sample.csv','mergeGroups')` automatically generates a second plot in which all the groups are compared to the *merged shared control*.
 
 ![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/MergedGroups/MergedSharedControl_sample.png)
