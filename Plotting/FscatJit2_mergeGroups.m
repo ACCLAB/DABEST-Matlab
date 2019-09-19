@@ -1,4 +1,4 @@
-function  [ss,avr,moes]=FscatJit2_mergeGroups(identifiers, data, varargin)
+function  [ss] =FscatJit2_mergeGroups(identifiers, data, varargin)
 
 % Plots data as both jittered points and an error bar, in the
 % order the identifiers are passed to it. It preserves whatever order
@@ -151,17 +151,18 @@ circleSize=circleSize./max(X);% So circleSize scales with n-data columns
 if strcmp(barstate, 'off') && strcmp(isPaired, 'N')
     
         if nex > 2
-            colors = {'blue','green','red'};
+            colors = lines(100);
+            %colors = {'blue','green','red'};
             for idx=1:nex
         curDat=celld{idx};
         hold on
         
         if idx == 1 
-        [s1] = scatjit_mergeGroups(curDat, jitFactor, 1 ,circleSize,colors{idx});
+        [s1] = scatjit_mergeGroups(curDat, jitFactor, 1 ,circleSize,colors(idx,:));
         elseif idx ==2 
-        [s1] = scatjit_mergeGroups(curDat, jitFactor, 1 ,circleSize,colors{idx});  
+        [s1] = scatjit_mergeGroups(curDat, jitFactor, 1 ,circleSize,colors(idx,:));  
         else
-        [s1] = scatjit_mergeGroups(curDat, jitFactor, idx-1 ,circleSize,colors{3});  
+        [s1] = scatjit_mergeGroups(curDat, jitFactor, idx-1 ,circleSize,colors(idx,:));  
         end
             end
         else
@@ -181,27 +182,32 @@ linewidth = 1;
 if nex > 2
 for idx=1:nex
     
-     if idx ==1 
+     if idx == 1 
         curDat=[celld{1};celld{2}];
         [av(1), moes, bci] = bootmoes(curDat);
         er(:,1)=moes;  
+        N(:,1) = length(curDat);
+        CI(:,1) = bci;
      elseif idx == 2
          
      else
         curDat=celld{idx};
         [av(idx-1), moes, bci] = bootmoes(curDat);
         er(:, (idx-1))=moes; 
+        N(:,idx-1) = length(curDat);
+        CI(:,idx-1) = bci;
     
      end
-end
      
+end
+ 
+
 else
         disp('Use the old version of this code(Tayfun)') 
        curDat=celld{idx};
     [av(idx), moes, bci] = bootmoes(curDat);
     er(:, idx)=moes; 
 end
-
   
 %     stdcd=nanstd(curDat);
 %     er(idx)=1.96*(stdcd/sqrt(length(curDat)-1));
@@ -247,10 +253,10 @@ celld = celld_combined_ctls;
 
 %% Set ticks, contigent on whether it is 2 or some other number of datasets
 if length(celld)==2;
-    uidents_combined = cell(length(uidents),1);
+    uidents_combined = cell(length(uidents)-1,1);
     uidents_combined{1} = [uidents{1},uidents{2}];
     uidents_combined{2} = uidents{3};
-    uidents_combined{3} = ' ';
+    %uidents_combined{3} = ' ';
     
     Xplus=horzcat(X, 3);
     set(gca,'XTick',Xplus);
@@ -259,14 +265,19 @@ if length(celld)==2;
     mdidents=vertcat(uidents);
 %     set(gca, 'xtickLabel', mdidents);
     set(gca, 'XLim', [0 length(mdidents)+1]);
+
 else
     set(gca,'XTick',X);
     %     set(gca, 'xtickLabel', uidents);
     set(gca, 'xtickLabel', []);
     set(gca, 'XLim', [0 length(uidents)]);
+    
+    uidents_combined = cell(length(uidents)-1,1);
+    uidents_combined{1} = [uidents{1},uidents{2}];
+    uidents_combined(2:end) = uidents(3:end);
+    
 end
-
-
+stats = table(uidents_combined(1:end,:), av', CI', N', 'VariableNames',{'Group','Value','CIs','N'});
 
 %% Insert mean difference and CIs on a different axis if there is a pair
 if length(celld)==2;
@@ -295,8 +306,6 @@ if length(celld)==2;
         tripleErrorBars(av, er, [.5 2.5], barwidth, linewidth, middle_bar);
     end
 
-
-    
     % Get the mean difference and CIs
  
     esm='md';
@@ -306,9 +315,13 @@ if length(celld)==2;
         ss=mes(celld{2},celld{1},esm,'nBoot',10000);
     end
     
-    avr=repmat(ss.md,2, 1)
-    moes=abs(avr-ss.mdCi)
+    avr=repmat(ss.md,2, 1);
+    moes=abs(avr-ss.mdCi);
 
+    delta_name = {[uidents_combined{2}, ' minus ', uidents_combined{1}]}; 
+    stats_delta = table(delta_name, ss.md, ss.mdCi', NaN, 'VariableNames', {'Group','Value','CIs','N'});
+    stats = [stats; stats_delta];
+    
     % Position of the reference axes (the axes that hold the scatjit_Tayfun)
     refAxes = gca;
     if isempty(lims) == 0
@@ -435,17 +448,21 @@ elseif length(celld)>2
     esm='md';
     clear moes;
     
-    
     avr = zeros(2, length(celld));
     moes = zeros(2, length(celld));
     ci = zeros(2, length(celld));
+    N = NaN(length(celld)-1,1);
     
     for idx = 2:length(celld)
         ss=mes(celld{idx},celld{1},esm,'nBoot',10000);
-        avr(:,idx)=repmat(ss.md,2, 1)
+        avr(:,idx)=repmat(ss.md,2, 1);
         moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
-        ci(:,idx) = ss.mdCi
+        ci(:,idx) = ss.mdCi;
+        delta_name(idx-1,:) = {[uidents_combined{idx}, ' minus ', uidents_combined{1}]};
     end
+    
+    stats_delta = table(delta_name, avr(1,2:end)', ci(:,2:end)',N, 'VariableNames', {'Group','Value','CIs','N'});
+    stats = [stats; stats_delta];
     
     [ciMin, ~] = min(ci(1,:));
     [ciMax, ~] = max(ci(2,:));
@@ -480,7 +497,7 @@ elseif length(celld)>2
   
 
     %% Multiple pairwise comparisons
-    clearvars avr moes er av;
+    clearvars avr moes er av CIs cis N delta_name;
     if mod(length(celld)+1,3)==0
         figure;
         pwmd = panel();
@@ -503,6 +520,33 @@ elseif length(celld)>2
         end
 
     end
+    
+     %%%%Names of the groups
+        uidents_multiple = cell(2*(length(uidents)/3),1);
+        uix = 1;
+        for index=1:length(uidents)
+            
+            if mod(index,3)==0
+            newuix = index-2;
+            uidents_multiple{uix} = [uidents{newuix},uidents{newuix+1}];
+            uidents_multiple{uix+1} = [uidents{newuix+2}];
+            uix = uix +2;
+            end
+        
+        end
+        
+         %%%%Error bars for the re-arranged data%%%%%%%% 
+        for id = 1:length(celld_combined_multiplepairwise)
+            
+        curDat=[celld_combined_multiplepairwise{id}];
+        [av(id), moesx, bci] = bootmoes(curDat);
+        er(:,id)=moesx;  
+        CIs(:,id) = bci;
+        N(:,id) = length(curDat);
+        end
+        
+        stats_2 = table(uidents_multiple, av', CIs', N', 'VariableNames',{'Group','Value','CIs','N'});
+                
         
         % Pairwise mean differences
         idx = 1;
@@ -511,18 +555,14 @@ elseif length(celld)>2
             ss=mes(celld_combined_multiplepairwise{jdx+1},celld_combined_multiplepairwise{jdx},esm,'nBoot',10000);
             avr(:,idx)=repmat(ss.md,2, 1);
             moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
+            cis(idx,:) = ss.mdCi;
+            delta_name(idx, :) = {[uidents_multiple{jdx+1}, ' minus ', uidents_multiple{jdx}]};
             jdx = jdx+2;
             idx = idx + 1;
         end
-        
-        %%%%Error bars for the re-arranged data%%%%%%%% 
-        for id = 1:length(celld_combined_multiplepairwise)
-            
-        curDat=[celld_combined_multiplepairwise{id}];
-        [av(id), moesx, bci] = bootmoes(curDat);
-        er(:,id)=moesx;  
-        end
-        
+        stats_2_delta = table(delta_name, avr(1,:)', cis', NaN(length(delta_name),1), 'VariableNames', {'Group','Value','CIs','N'});
+        stats_2 = [stats_2; stats_2_delta];
+              
         X = 1:length(celld_combined_multiplepairwise);
         newX = X;
         
@@ -578,15 +618,16 @@ elseif length(celld)>2
                 
                 %%% TrpA1(first parental ctl is always blue), Gal4(second
                 %%% order ctl) is always green%%%%%%%%%%%%%%
-                colors = {'blue','green','red'};
-                color_id = mod(idx,3); 
+                
+                %colors = {'blue','green','red'};
+                %color_id = mod(idx,3); 
                     
                 if mod(idx,3)==0
                    location = location+1; 
-                   [s2] = scatjit_mergeGroups(curDat, jitFactor, location,circleSize,colors{3});
+                   [s2] = scatjit_mergeGroups(curDat, jitFactor, location,circleSize,colors(idx,:));
                    location = location+1;
                 else
-                    [s2] = scatjit_mergeGroups(curDat, jitFactor, location,circleSize,colors{color_id});
+                    [s2] = scatjit_mergeGroups(curDat, jitFactor, location,circleSize,colors(idx,:));
                 end
             end
        
@@ -622,18 +663,18 @@ elseif length(celld)>2
            );
         set(refAxes, 'Xtick', []);
         
-        uidents_multiple = cell(2*(length(uidents)/3),1);
-        uix = 1;
-        for index=1:length(uidents)
-            
-            if mod(index,3)==0
-            newuix = index-2;
-            uidents_multiple{uix} = [uidents{newuix},uidents{newuix+1}];
-            uidents_multiple{uix+1} = [uidents{newuix+2}];
-            uix = uix +2;
-            end
-        
-        end
+%         uidents_multiple = cell(2*(length(uidents)/3),1);
+%         uix = 1;
+%         for index=1:length(uidents)
+%             
+%             if mod(index,3)==0
+%             newuix = index-2;
+%             uidents_multiple{uix} = [uidents{newuix},uidents{newuix+1}];
+%             uidents_multiple{uix+1} = [uidents{newuix+2}];
+%             uix = uix +2;
+%             end
+%         
+%         end
         
         
         set(gca, 'Xtick', X, 'xtickLabel', uidents_multiple);
@@ -643,9 +684,12 @@ elseif length(celld)>2
         line1 = refline(0,0);
         set(line1, 'lineStyle', ':')
         
-    end
-
+        end
 end
     
-
- 
+if exist('stats_2')
+    ss = stats_2;
+    stats
+else
+    ss = stats;
+end 
