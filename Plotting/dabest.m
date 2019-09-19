@@ -1,4 +1,4 @@
-function dabest(csvFile, varargin)
+function [ss] = dabest(csvFile, varargin)
 
 d = readtable(csvFile);
 identifiers = d(:,{'Identifiers'});
@@ -7,15 +7,16 @@ data = d(:,{'Values'});
 data = table2array(data);
 close(gcf);
 
-if length(varargin) > 0
+if length(varargin) > 0;
     if strcmp(varargin{1},'Paired');
-        [ss] = FscatJit2(identifiers, data,'Y')
+        [ss] = FscatJit2(identifiers, data,'Y');
     
     else strcmp(varargin{1},'mergeGroups');
-        [ss,avr,moes] = FscatJit2_mergeGroups(identifiers, data)
+        [ss] = FscatJit2_mergeGroups(identifiers, data);
+        
     end
 else
-    [ss] = FscatJit2(identifiers, data)
+    [ss] = FscatJit2(identifiers, data);
 end
 
 end

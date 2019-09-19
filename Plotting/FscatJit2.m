@@ -159,21 +159,26 @@ end
 
 
 set(gca,'XTick',X);
-hold on
+hold on;
 
 barwidth=0.5;
 linewidth = 1;
 % Use 1.96X SEM (margin of error on z-distibution) as the error bars
 for idx=1:nex
-        
+       
     curDat=celld{idx};
     [av(idx), moes, bci] = bootmoes(curDat);
-    er(:, idx)=moes; 
-      
+    
+    er(:, idx) = moes; 
+    CI(idx, :) = bci;  
+    Value(idx, :) = av(idx);
+    N(idx, :) = length(curDat);
 %     stdcd=nanstd(curDat);
 %     er(idx)=1.96*(stdcd/sqrt(length(curDat)-1));
 end
 hold on;
+stats = table(uidents, Value, CI, N, 'VariableNames',{'Group','Value','CIs','N'});
+
 [e1] = tripleErrorBars(av, er, X, barwidth, linewidth, middle_bar);
 
 
@@ -234,8 +239,9 @@ if length(celld)==2;
     end
     avr=repmat(ss.md,2, 1);
     moes=abs(avr-ss.mdCi);
- 
-
+    delta_name = {[uidents{2}, ' minus ', uidents{1}]}; 
+    stats_delta = table(delta_name, ss.md, ss.mdCi', NaN, 'VariableNames', {'Group','Value','CIs','N'});
+    stats = [stats; stats_delta];
 
     % Position of the reference axes (the axes that hold the scatjit)
     refAxes = gca;
@@ -364,13 +370,18 @@ else
     avr = zeros(2, length(celld));
     moes = zeros(2, length(celld));
     ci = zeros(2, length(celld));
+    N = NaN(length(celld)-1,1);
     
     for idx = 2:length(celld)
         ss=mes(celld{idx},celld{1},esm,'nBoot',10000);
         avr(:,idx)=repmat(ss.md,2, 1);
         moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
         ci(:,idx) = ss.mdCi;
+        delta_name(idx-1,:) = {[uidents{idx}, ' minus ', uidents{1}]};
     end
+    
+    stats_delta = table(delta_name, avr(1,2:end)', ci(:,2:end)', N, 'VariableNames', {'Group','Value','CIs','N'});
+    stats = [stats; stats_delta];
     
     [ciMin, ~] = min(ci(1,:));
     [ciMax, ~] = max(ci(2,:));
@@ -396,7 +407,7 @@ else
     set(line1, 'lineStyle', ':')
     
     %% Multiple pairwise comparisons
-    clearvars avr moes;
+    clearvars avr moes ci delta_name N;
     if mod(length(celld),2)==0
         figure;
         pwmd = panel();
@@ -407,14 +418,19 @@ else
         % Pairwise mean differences
         idx = 1;
         jdx = 1;
+        
         while jdx < length(celld)
             ss=mes(celld{jdx+1},celld{jdx},esm,'nBoot',10000);
             avr(:,idx)=repmat(ss.md,2, 1);
             moes(:,idx)=abs(avr(:,idx)-ss.mdCi);
+            ci(:,idx) = ss.mdCi;
+            delta_name(idx,:) = {[uidents{jdx+1}, ' minus ', uidents{jdx}]};
+            
             jdx = jdx+2;
             idx = idx + 1;
         end
-        
+        stats_delta = table(delta_name, avr(1,:)', ci', NaN(length(delta_name),1), 'VariableNames', {'Group','Value','CIs','N'});
+        stats = [stats; stats_delta];
         
         count = 0;
         idx = 1;
@@ -498,4 +514,5 @@ else
     end
     
 end
+ss = stats;
 end
