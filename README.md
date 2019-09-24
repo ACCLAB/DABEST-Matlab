@@ -86,7 +86,7 @@ To combine two groups of data and compare to a third group, run `dabest('MergedG
 
 ### 6. Multiple merged groups
 
-For the data that contain more than three groups -and a number that is divisible by 3, `dabest('MultipleGroups_sample.csv','mergeGroups')` generates a *multiple merged groups* plot.
+For the data that contain more than three groups -and a number that is divisible by 3, `dabest('MultipleMergedGroups_sample.csv','mergeGroups')` generates a *multiple merged groups* plot.
 
 ![](https://github.com/ACCLAB/DABEST-Matlab/blob/master/SampleData/MergedGroups/MultipleMergedGroups_sample.png)
 
