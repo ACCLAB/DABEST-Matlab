@@ -157,7 +157,6 @@ if strcmp(barstate, 'off') && strcmp(isPaired, 'N')
     end
 end
 
-
 set(gca,'XTick',X);
 hold on;
 
@@ -200,7 +199,6 @@ else
 end
 
 
-
 %% Insert mean difference and CIs on a different axis if there is a pair
 if length(celld)==2;
     if strcmpi(isPaired, 'Y')
@@ -227,8 +225,6 @@ if length(celld)==2;
         tripleErrorBars(av, er, [.5 2.5], barwidth, linewidth, middle_bar);
     end
 
-
-    
     % Get the mean difference and CIs
  
     esm='md';
@@ -339,7 +335,8 @@ if length(celld)==2;
     
     set(line1, 'LineStyle', ':');
     set(line2, 'LineStyle', ':');
-    marker = 'v';
+    
+    %marker = 'v';
     set(p3,'MarkerFaceColor',[0 0 0],'MarkerEdgeColor',[0 0 0],...
         'MarkerSize',5,...
         'Marker',marker,...
