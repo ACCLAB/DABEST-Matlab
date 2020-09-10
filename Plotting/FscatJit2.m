@@ -89,6 +89,12 @@ elseif nVarargs == 4
     isPaired = varargin{2};
     circleSize=varargin{3};
     barstate=varargin{4};
+elseif nVarargs == 5
+    lims = varargin{1};
+    isPaired = varargin{2};
+    circleSize=varargin{3};
+    barstate=varargin{4};
+    labely = varargin{5};
 end
 
 switch barstate
@@ -182,20 +188,28 @@ stats = table(uidents, Value, CI, N, 'VariableNames',{'Group','Value','CIs','N'}
 
 
 %% Set ticks, contigent on whether it is 2 or some other number of datasets
-if length(celld)==2;
+if length(celld)==2
     Xplus=horzcat(X, 3);
     disp(Xplus);
     set(gca,'XTick',Xplus)
     mdidents=vertcat(uidents,' ');
     set(gca, 'xtickLabel', mdidents);
     set(gca, 'XLim', [0 length(mdidents)+1]);
-    ylabel('value','FontSize',18,'FontName','Arial');
+    if isempty(labely)
+        ylabel('value','FontSize',18,'FontName','Arial');
+    else
+        ylabel(labely,'FontSize',18,'FontName','Arial');
+    end
 else
     set(gca,'XTick',X);
     %     set(gca, 'xtickLabel', uidents);
     set(gca, 'xtickLabel', []);
     set(gca, 'XLim', [0 length(uidents)+1]);
-    ylabel('value','FontSize',18,'FontName','Arial');
+    if isempty(labely)
+        ylabel('value','FontSize',18,'FontName','Arial');
+    else
+        ylabel(labely,'FontSize',18,'FontName','Arial');
+    end
 end
 
 
@@ -442,7 +456,11 @@ else
         pwmd(1,1).select();
         refAxes = gca;
         marker = 'o';
-        ylabel('value','FontSize',18,'FontName','Arial');
+        if isempty(labely)
+            ylabel('value','FontSize',18,'FontName','Arial');
+        else
+            ylabel(labely,'FontSize',18,'FontName','Arial');
+        end
         if isempty(lims) == 0
             set(refAxes, 'YLim', lims);
         end
