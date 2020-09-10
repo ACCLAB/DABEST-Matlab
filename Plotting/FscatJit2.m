@@ -14,12 +14,17 @@ function  ss=FscatJit2(identifiers, data, varargin)
 % FscatJit(identifiers, data, circleSize, 'on')
 % Defines the circle size, adds bars
 
+% FscatJit(identifiers, data, circleSize, 'on', 'my value')
+% Label of the y axis
+
 % Adam Claridge-Chang 20120522 Takes numeric variables on the X-axis as
 % well as nominal.
 % Labels xaxis with the uidents instead of numbers Adam CC 20121113
 
 % Sameer Aryal Jan 22, 2013. Can now compute mean difference and plot it
 % next to the bar scatjits, along with a floating axis.
+
+% Cristina Gil 10/09/2020 Customize label on the y axis
 
 %% For testing_______
 % Mamma mia
